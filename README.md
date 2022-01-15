@@ -5,4 +5,4 @@
     docker build -t cpp/test .
     
 # Run:
-    go run evaluator.go
+    go run .
