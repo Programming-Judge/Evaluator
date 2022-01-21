@@ -2,11 +2,12 @@
 
 # Setup:
     go mod download
-    cd python3 
+    cd images/python3
     docker build --tag python3-eval
-    cd ..
     
 # Run:
+    cd ../../src
     go run .
+
 # Test it with a http request
-    id=korakora and lang=python3
+    localhost:7070/submit/eval?id=korakora&lang=python3

@@ -3,8 +3,11 @@ package main
 import (
 	"context"
 	// "fmt"
-	"io"
 	"os"
+
+	// "fmt"
+	"io"
+	"path"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -35,7 +38,7 @@ func execute(code_path, input_path, output_path, lang string) (string, error) {
 	// Path to the directory where the
 	// files are mounted (in the host)
 	location, _ := os.Getwd()
-	location += "/" + bind_mnt_dir
+	location = path.Dir(location) + "/interface/" + bind_mnt_dir
 
 	// Container creation
 	resp, err := cli.ContainerCreate(
@@ -49,7 +52,7 @@ func execute(code_path, input_path, output_path, lang string) (string, error) {
 				{
 					Type:   mount.TypeBind,
 					Source: location,
-					Target: "/home/execution_user/" + bind_mnt_dir,
+					Target: "/home/" + unp_user + "/" + bind_mnt_dir,
 				},
 			},
 		},
