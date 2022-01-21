@@ -6,25 +6,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func eval(ctx *gin.Context)  {
+func eval(ctx *gin.Context) {
 
-	fileName := ctx.Param("fileName")
+	// Get id and lang from request
+	id, lang := ctx.Query("id"), ctx.Query("lang")
 
-	codeFile , inputFile , outputFile := getPaths(fileName)
+	// Get file paths from request
+	codeFile, inputFile, outputFile := getPaths(id, lang)
 
-	message, err:= execute(codeFile, inputFile, outputFile);
-
+	message, err := execute(codeFile, inputFile, outputFile, lang)
 	if err != nil {
-		ctx.JSON(200 , gin.H{
-			"message" : "Failed to execute",
-		})
-		return
+		message = "Failed to execute"
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-        "message": message,
-    })
-
-
-
+	// Return JSON with status
+	ctx.JSON(http.StatusOK, gin.H{"message": message})
 }
