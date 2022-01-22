@@ -11,10 +11,9 @@ func eval(ctx *gin.Context) {
 	// Get id and lang from request
 	id, lang := ctx.Query("id"), ctx.Query("lang")
 
-	// Get file paths from request
-	codeFile, inputFile, outputFile := getPaths(id, lang)
-
-	message, err := execute(codeFile, inputFile, outputFile, lang)
+	// Start execution
+	message, err := execute(id, lang)
+	
 	if err != nil {
 		message = "Failed to execute"
 	}

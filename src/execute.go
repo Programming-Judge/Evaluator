@@ -2,12 +2,10 @@ package main
 
 import (
 	"context"
-	// "fmt"
 	"os"
 
-	// "fmt"
 	"io"
-	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -17,7 +15,7 @@ import (
 )
 
 // Refer to https://docs.docker.com/engine/api/sdk/examples/
-func execute(code_path, input_path, output_path, lang string) (string, error) {
+func execute(id, lang string) (string, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
@@ -38,14 +36,16 @@ func execute(code_path, input_path, output_path, lang string) (string, error) {
 	// Path to the directory where the
 	// files are mounted (in the host)
 	location, _ := os.Getwd()
-	location = path.Dir(location) + "/interface/" + bind_mnt_dir
+
+	// Modified to work on windows as well
+	location = filepath.Join(filepath.Dir(location), "interface", bind_mnt_dir)
 
 	// Container creation
 	resp, err := cli.ContainerCreate(
 		ctx,
 		&container.Config{
 			Image: image_name,
-			Cmd:   []string{code_path, input_path, output_path},
+			Cmd:   []string{id, lang_extension_map[lang], bind_mnt_dir},
 		},
 		&container.HostConfig{
 			Mounts: []mount.Mount{

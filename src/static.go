@@ -18,7 +18,6 @@ package main
  *
  * os.Getwd()/../interface/{bind_mnt_dir}
  */
-
 var bind_mnt_dir = "submissions"
 
 var unp_user = "execution_user"
@@ -46,28 +45,4 @@ var lang_extension_map = map[string]string{
 var lang_image_map = map[string]string{
 	"cpp14":   "", // TODO
 	"python3": "python3-eval",
-}
-
-func getPaths(id string, lang string) (string, string, string) {
-
-	/*
-	 * We expect the request to contain parameters
-	 * id and lang id -> submission ID
-	 * lang -> language of the submission
-	 * The corresponding source, input and output
-	 * should be placed in the "bind_mnt_dir"
-	 * directory with the following naming convention:
-	 *
-	 * source file = {id} + "-main." + {extension}
-	 *
-	 * input file := {id} + "-input.txt"
-	 *
-	 * output file := {id} + "-output.txt"
-	 */
-	extension := lang_extension_map[lang]
-	common := bind_mnt_dir + "/" + id
-	codeFile := common + "-main." + extension
-	inputFile := common + "-input.txt"
-	outputFile := common + "-output.txt"
-	return codeFile, inputFile, outputFile
 }
