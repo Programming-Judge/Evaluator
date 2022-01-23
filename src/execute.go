@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strconv"
 
 	"io"
 	"path/filepath"
@@ -16,7 +17,7 @@ import (
 )
 
 // Refer to https://docs.docker.com/engine/api/sdk/examples/
-func execute(id, lang, timelimit string) (string, error) {
+func execute(id, lang, timelimit, memorylimit string) (string, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
@@ -41,12 +42,19 @@ func execute(id, lang, timelimit string) (string, error) {
 	// Modified to work on windows as well
 	location = filepath.Join(filepath.Dir(location), "interface", bind_mnt_dir)
 
-	// Container creation
+	// Create int variable for memory limit
+	var mlimit int
+	mlimit, err = strconv.Atoi(memorylimit)
+	if err != nil {
+		return "", err
+	}
+
+	//Container creation
 	resp, err := cli.ContainerCreate(
 		ctx,
 		&container.Config{
 			Image: image_name,
-			Cmd:   []string{id, lang_extension_map[lang], bind_mnt_dir, timelimit},
+			Cmd:   []string{id, lang_extension_map[lang], bind_mnt_dir, timelimit, memorylimit},
 		},
 		&container.HostConfig{
 			Mounts: []mount.Mount{
@@ -56,6 +64,7 @@ func execute(id, lang, timelimit string) (string, error) {
 					Target: "/home/" + unp_user + "/" + bind_mnt_dir,
 				},
 			},
+			Resources: container.Resources{Memory: int64(mlimit * 1e6)},
 		},
 		nil,
 		nil,
