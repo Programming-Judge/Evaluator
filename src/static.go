@@ -46,3 +46,6 @@ var lang_image_map = map[string]string{
 	"cpp14":   "", // TODO
 	"python3": "python3-eval",
 }
+
+const DEFAUL_TIME_LIMIT = 1
+const SECONDS = "s"
