@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	"io"
@@ -15,7 +16,7 @@ import (
 )
 
 // Refer to https://docs.docker.com/engine/api/sdk/examples/
-func execute(id, lang string) (string, error) {
+func execute(id, lang, timelimit string) (string, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
@@ -45,7 +46,7 @@ func execute(id, lang string) (string, error) {
 		ctx,
 		&container.Config{
 			Image: image_name,
-			Cmd:   []string{id, lang_extension_map[lang], bind_mnt_dir},
+			Cmd:   []string{id, lang_extension_map[lang], bind_mnt_dir, timelimit},
 		},
 		&container.HostConfig{
 			Mounts: []mount.Mount{
@@ -60,6 +61,7 @@ func execute(id, lang string) (string, error) {
 		nil,
 		"")
 	if err != nil {
+		fmt.Println(err)
 		return "", err
 	}
 
@@ -67,6 +69,7 @@ func execute(id, lang string) (string, error) {
 	if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
 
 		// Some error has occurred while starting the container
+		fmt.Println(err)
 		return "", err
 	}
 
@@ -75,7 +78,7 @@ func execute(id, lang string) (string, error) {
 	select {
 	case err := <-errCh:
 		if err != nil {
-
+			fmt.Println(err)
 			// Some error has occurred while the
 			// container was executing the code
 			panic(err)
