@@ -10,4 +10,4 @@
     go run .
 
 # Test it with a http request
-    localhost:7070/submit/eval?id=korakora&lang=python3
+    http://localhost:7070/submit/eval?id=korakora&lang=python3&timelimit=2s

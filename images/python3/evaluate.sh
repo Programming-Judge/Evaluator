@@ -1,10 +1,10 @@
 #!/bin/bash
 
 function cleanup() {
-    if [-f "$1-code-output.txt"]; then
+    if [ -f "$1-code-output.txt" ]; then
         rm $1-code-output.txt
     fi
-    if [-f "$1-diff-messages.txt"]; then
+    if [ -f "$1-diff-messages.txt" ]; then
         rm $1-diff-messages.txt
     fi
 }
@@ -28,16 +28,23 @@ function cleanup() {
 touch $1-code-output.txt
 
 # Execute and trap output
-python3 $3/$1-main.$2 < $3/$1-input.txt &> $1-code-output.txt
+timeout $4 python3 $3/$1-main.$2 < $3/$1-input.txt &> $1-code-output.txt
 
-if [ $? != 0 ]; then
+res=$?
+
+if [ $res -eq 124 ]; then 
+    echo "time limit exceeded"
+    cleanup $1
+    exit
+
+elif [ $res != 0 ]; then
     echo "run failed"
     cleanup $1
     exit
 fi
 
 # Check if output matches
-diff $1-code-output.txt $3/$1-output.txt > $1-diff-messages.txt
+diff --strip-trailing-cr $1-code-output.txt $3/$1-output.txt > $1-diff-messages.txt
 if [ $? != 0 ]; then
     echo "wrong output"
     cleanup $1
