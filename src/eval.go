@@ -9,10 +9,10 @@ import (
 func eval(ctx *gin.Context) {
 
 	// Get id and lang from request
-	id, lang := ctx.Query("id"), ctx.Query("lang")
+	id, lang, timelimit := ctx.Query("id"), ctx.Query("lang"), ctx.Query("timelimit")
 
 	// Start execution
-	message, err := execute(id, lang)
+	message, err := execute(id, lang, timelimit)
 	
 	if err != nil {
 		message = "Failed to execute"
