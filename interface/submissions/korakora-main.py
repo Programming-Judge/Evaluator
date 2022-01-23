@@ -1,2 +1,2 @@
-for j in range(4):
-    print(j)
+x = int(input())
+print(2 * x + 1)
