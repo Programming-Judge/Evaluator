@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	// "fmt"
 	"io"
 	"os"
 	"strings"
@@ -15,7 +14,7 @@ import (
 
 //Refer to https://docs.docker.com/engine/api/sdk/examples/
 
-func execute(code_path , input_path , output_path string) (string , error) {
+func execute(code_path , input_path , output_path, time_limit string) (string , error) {
 
 	ctx := context.Background()
     cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
@@ -44,7 +43,7 @@ func execute(code_path , input_path , output_path string) (string , error) {
 		ctx,
 		&container.Config{
         Image: image_name,
-		Cmd: []string{code_path , input_path , output_path},
+		Cmd: []string{code_path , input_path , output_path, time_limit},
     	},
 		&container.HostConfig{
 			Mounts: []mount.Mount{

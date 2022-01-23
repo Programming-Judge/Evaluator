@@ -9,5 +9,5 @@ func getPaths(fileName string) (string, string, string) {
 	outputFile := "submissions/output.txt"
 
 	return codeFile, inputFile, outputFile
-
 }
+
