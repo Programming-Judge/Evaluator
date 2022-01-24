@@ -35,6 +35,7 @@ var lang_extension_map = map[string]string{
 	"python2": "py",
 	"pypy2":   "py",
 	"c":       "c",
+	"java":    "java",
 }
 
 /*
@@ -45,7 +46,8 @@ var lang_extension_map = map[string]string{
 var lang_image_map = map[string]string{
 	"cpp14":   "", // TODO
 	"python3": "python3-eval",
-	"pypy3": "pypy3-eval",
+	"pypy3":   "pypy3-eval",
+	"java":    "java-eval",
 }
 
 const DEFAUL_TIME_LIMIT = 1
