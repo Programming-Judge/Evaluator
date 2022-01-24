@@ -11,8 +11,6 @@
     cd ../../src
     go run .
 
-
-=======
 # Test it with some http requests
     localhost:7070/submit/eval?id=korakora&lang=python3
     localhost:7070/submit/eval?id=korakora&lang=pypy3
