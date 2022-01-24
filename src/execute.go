@@ -54,7 +54,7 @@ func execute(id, lang, timelimit, memorylimit string) (string, error) {
 		ctx,
 		&container.Config{
 			Image: image_name,
-			Cmd:   []string{id, lang_extension_map[lang], bind_mnt_dir, timelimit, memorylimit},
+			Cmd:   []string{id, lang_extension_map[lang], bind_mnt_dir, timelimit},
 		},
 		&container.HostConfig{
 			Mounts: []mount.Mount{
