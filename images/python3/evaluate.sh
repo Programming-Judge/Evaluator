@@ -28,7 +28,7 @@ function cleanup() {
 touch $1-code-output.txt
 
 # Execute and trap output
-timeout $4 python3 $3/$1-main.$2 < $3/$1-input.txt &> $1-code-output.txt
+timeout $4 python3 $3/$1-main.$2 < $3/$1-input.txt &> $1-code-output.txt 
 
 res=$?
 
@@ -36,7 +36,10 @@ if [ $res -eq 124 ]; then
     echo "time limit exceeded"
     cleanup $1
     exit
-
+elif [ $res -eq 137 ]; then
+    echo "memory limit exceeded"
+    cleanup $1
+    exit
 elif [ $res != 0 ]; then
     echo "run failed"
     cleanup $1
