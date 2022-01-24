@@ -9,21 +9,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 func eval(ctx *gin.Context) {
 
 	// Get id and lang from request
-	id, lang, timelimit := ctx.Query("id"), ctx.Query("lang"), ctx.Query("timelimit")
-	if(!validateSubmitRequest(id, lang, ctx)){
-		return		
+	id, lang, timelimit, memorylimit := ctx.Query("id"), ctx.Query("lang"), ctx.Query("timelimit"), ctx.Query("memorylimit")
+	if !validateSubmitRequest(id, lang, ctx) {
+		return
 	}
 	// setting default time limit to 1s
-	if(len(timelimit) == 0){
-		timelimit = strconv.Itoa(DEFAUL_TIME_LIMIT) + SECONDS
+	if len(timelimit) == 0 {
+		timelimit = strconv.Itoa(DEFAULT_TIME_LIMIT) + SECONDS
 	}
+
+	//set default memory limit to 64MB
+	if len(memorylimit) == 0 {
+		memorylimit = strconv.Itoa(int(DEFAULT_MEMORY_LIMIT))
+	} else {
+		l := len(memorylimit)
+		memorylimit = memorylimit[:l-2] //strip "mb" from parameter
+	}
+
 	// Start execution
-	message, err := execute(id, lang, timelimit)
-	
+	message, err := execute(id, lang, timelimit, memorylimit)
+
 	if err != nil {
 		message = "Failed to execute"
 	}

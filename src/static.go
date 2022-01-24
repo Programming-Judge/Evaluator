@@ -49,6 +49,8 @@ var lang_image_map = map[string]string{
 	"pypy3":   "pypy3-eval",
 	"java":    "java-eval",
 }
-
 const DEFAUL_TIME_LIMIT = 1
 const SECONDS = "s"
+const DEFAULT_TIME_LIMIT = 1
+const SECONDS = "s"
+const DEFAULT_MEMORY_LIMIT = 64 //64 MB
