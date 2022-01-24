@@ -6,6 +6,8 @@
     docker build --tag python3-eval
     cd ../pypy3
     docker build --tag pypy3-eval
+    cd images/java
+    docker build --tag java-eval
     
 # Run:
     cd ../../src
@@ -16,4 +18,5 @@
     localhost:7070/submit/eval?id=korakora&lang=pypy3
     localhost:7070/submit/eval?id=dimbo&lang=pypy3
     localhost:7070/submit/eval?id=korakora&lang=python3&timelimit=2s
+    localhost:7070/submit/eval?id=sample&lang=java
     **Default time limit = 1s**
