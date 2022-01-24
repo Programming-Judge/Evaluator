@@ -45,7 +45,7 @@ fi
 
 cd $3
 # run the code and trap the output
-java $1_main < $1-input.txt > ../$1-output.txt
+java $1_main < $1-input.txt > ../$1-code-output.txt
 
 if [ $? != 0 ]; then
     echo "run failed"
