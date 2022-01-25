@@ -56,9 +56,12 @@ fi
 cd ..
 
 # Check if output matches
-diff $1-code-output.txt $3/$1-output.txt > $1-diff-messages.txt
+diff --strip-trailing-cr $1-code-output.txt $3/$1-output.txt > $1-diff-messages.txt
 if [ $? != 0 ]; then
     echo "wrong output"
+    cat $1-code-output.txt
+    echo ":"
+    cat $3/$1-output.txt
     cleanup $1 $3
     exit
 fi
