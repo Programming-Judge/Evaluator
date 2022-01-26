@@ -1,4 +1,7 @@
-FROM gcc:latest
+FROM ubuntu:20.04
+
+RUN apt-get update
+RUN apt-get install g++ -y
 
 # Create the dummy user
 RUN useradd --create-home --shell /bin/bash execution_user
