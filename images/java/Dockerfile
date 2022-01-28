@@ -1,4 +1,4 @@
-FROM openjdk:16-slim
+FROM openjdk:8u312-slim
 
 # Create the dummy user
 RUN useradd --create-home --shell /bin/bash execution_user
