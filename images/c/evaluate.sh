@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 function cleanup(){
     if [ -f "$1-code-output.txt" ]; then
@@ -48,7 +48,7 @@ if [ $? != 0 ]; then
     exit
 fi
 
-diff --strip-trailing-cr $1-code-output.txt $3/$1-output.txt > $1-diff-messages.txt
+diff -w $1-code-output.txt $3/$1-output.txt > $1-diff-messages.txt
 
 if [ $? != 0 ]; then
     echo "wrong output"

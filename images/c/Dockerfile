@@ -1,11 +1,7 @@
-FROM ubuntu:20.04
-
-RUN apt-get update
-RUN apt-get install g++ -y
+FROM frolvlad/alpine-gcc
 
 # Create the dummy user
-RUN useradd --create-home --shell /bin/bash execution_user
-
+RUN adduser -D -s /bin/sh execution_user
 # Copy the execution command
 COPY evaluate.sh /home/execution_user/
 RUN chmod +x /home/execution_user/evaluate.sh
