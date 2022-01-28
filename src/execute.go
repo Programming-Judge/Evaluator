@@ -17,7 +17,7 @@ import (
 )
 
 // Refer to https://docs.docker.com/engine/api/sdk/examples/
-func execute(id, lang, timelimit, memorylimit string) (string, error) {
+func execute(data map[string]string) (string, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
@@ -25,6 +25,9 @@ func execute(id, lang, timelimit, memorylimit string) (string, error) {
 		// Error in creation of docker client
 		return "", err
 	}
+
+	id, lang, timelimit, memorylimit :=
+		data["id"], data["lang"], data["timelimit"], data["memorylimit"]
 
 	image_name := lang_image_map[lang]
 
@@ -38,13 +41,11 @@ func execute(id, lang, timelimit, memorylimit string) (string, error) {
 	// Path to the directory where the
 	// files are mounted (in the host)
 	location, _ := os.Getwd()
-
 	// Modified to work on windows as well
 	location = filepath.Join(filepath.Dir(location), "interface", bind_mnt_dir)
-
 	// Create int variable for memory limit
 	var mlimit int
-	mlimit, err = strconv.Atoi(memorylimit)
+	mlimit, err = strconv.Atoi(memorylimit[:len(memorylimit)-2])
 	if err != nil {
 		return "", err
 	}
@@ -73,34 +74,21 @@ func execute(id, lang, timelimit, memorylimit string) (string, error) {
 		fmt.Println(err)
 		return "", err
 	}
-
-	// Container start
 	if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
-
-		// Some error has occurred while starting the container
 		fmt.Println(err)
 		return "", err
 	}
-
-	// Wait till the container stops
 	statusCh, errCh := cli.ContainerWait(ctx, resp.ID, container.WaitConditionNotRunning)
 	select {
 	case err := <-errCh:
 		if err != nil {
 			fmt.Println(err)
-			// Some error has occurred while the
-			// container was executing the code
 			panic(err)
 		}
 	case <-statusCh:
 	}
-
-	// Read output
 	out, err := cli.ContainerLogs(ctx, resp.ID, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {
-
-		// Some error has occurred while reading
-		// the output from the container
 		return "", err
 	}
 	defer out.Close()

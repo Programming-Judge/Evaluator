@@ -3,11 +3,11 @@
 # Setup:
     go mod download
     cd images/python3
-    docker build --tag python3-eval
+    docker build --tag python3-eval .
     cd ../pypy3
-    docker build --tag pypy3-eval
+    docker build --tag pypy3-eval .
     cd images/java
-    docker build --tag java-eval
+    docker build --tag java-eval .
     
 # Run:
     cd ../../src
@@ -23,3 +23,10 @@
     localhost:7070/submit/eval?id=multi&lang=python3&timelimit=2s&memorylimit=64mb
     **Default time limit = 1s**
     **Default memory limit = 64MB**
+
+# Invalid requests:
+    localhost:7070/submit/eval?id=korakora&lang=python
+    localhost:7070/submit/eval?id=korakora&lang=python2
+    localhost:7070/submit/eval?id=korakora&lang=python3&timelimit=0.5s
+    localhost:7070/submit/eval
+    localhost:7070/submit/eval?id=korakora
