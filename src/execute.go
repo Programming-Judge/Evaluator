@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 
-	"io"
+	//"io"
 	"path/filepath"
 	"strings"
 
@@ -14,6 +14,7 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
+	"github.com/docker/docker/pkg/stdcopy"
 )
 
 // Refer to https://docs.docker.com/engine/api/sdk/examples/
@@ -93,12 +94,12 @@ func execute(data map[string]string) (string, error) {
 	}
 	defer out.Close()
 
-	buf := new(strings.Builder)
-	_, err = io.Copy(buf, out)
+	std_output, std_err := new(strings.Builder), new(strings.Builder)
+	_, err = stdcopy.StdCopy(std_output, std_err, out)
 
 	if err != nil {
 		return "", err
 	}
 
-	return buf.String(), err
+	return std_output.String(), err
 }
