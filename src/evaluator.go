@@ -8,10 +8,7 @@ func main() {
 	{
 		submit.GET(
 			"/eval",
-			validateId,
-			validateLang,
-			validateTimelimit,
-			validateMemoryLimit,
+			validateAll(),
 			eval)
 	}
 	port := ":7070"
