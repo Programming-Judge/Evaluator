@@ -10,7 +10,7 @@
     docker build --tag java-eval .
     cd images/c
     docker build --tag c-eval .
-    
+
 # Run:
     cd ../../src
     go run .
@@ -27,3 +27,10 @@
     
     **Default time limit = 1s**
     **Default memory limit = 64MB**
+
+# Invalid requests:
+    localhost:7070/submit/eval?id=korakora&lang=python
+    localhost:7070/submit/eval?id=korakora&lang=python2
+    localhost:7070/submit/eval?id=korakora&lang=python3&timelimit=0.5s
+    localhost:7070/submit/eval
+    localhost:7070/submit/eval?id=korakora

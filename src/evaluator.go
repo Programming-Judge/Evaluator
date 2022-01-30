@@ -6,10 +6,11 @@ func main() {
 	router := gin.Default()
 	submit := router.Group("/submit")
 	{
-		submit.GET("/eval", eval)
+		submit.GET(
+			"/eval",
+			validateAll(),
+			eval)
 	}
-
-	// Server serves requests here
 	port := ":7070"
 	router.Run(port)
 }
