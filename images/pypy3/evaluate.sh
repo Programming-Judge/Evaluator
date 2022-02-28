@@ -27,6 +27,7 @@ function cleanup() {
 
 touch $1-code-output.txt
 
+ls -lR
 # Execute and trap output
 pypy3 $3/$1-main.$2 < $3/$1-input.txt &> $1-code-output.txt
 
