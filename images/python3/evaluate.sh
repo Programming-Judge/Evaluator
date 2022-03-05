@@ -3,7 +3,8 @@ flag=0
 while [ -e "$5/$7/$3/$a-input.txt" ]
 do
     touch "$1-code-output.txt"
-    timeout $4 python3 $5/$6/$1.$2 < "$5/$7/$3/$a-input.txt" &> "$1-code-output.txt"
+    timeout $4 python3 $5/$6/$1.$2 < "$5/$7/$3/$a-input.txt" > "$1-code-output.txt"
+    #cat "$1-code-output.txt"
     res=$?
     if [ $res -eq 124 ]; then
         echo "Time limit exceeded on test $a"
@@ -19,7 +20,7 @@ do
         exit
     fi
 
-    diff -w "$1-code-output.txt" "$5/$7/$3/$a-output.txt" > "$1-diff-messages.txt"
+    diff "$1-code-output.txt" "$5/$7/$3/$a-output.txt" > "$1-diff-messages.txt"
     if [ $? != 0 ]; then
         echo "Wrong answer on test case $a"
         flag=1
