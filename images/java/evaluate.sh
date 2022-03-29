@@ -32,36 +32,51 @@ function cleanup() {
 #
 # output file = {id} + "-output.txt"
 
-touch $1-code-output.txt
-
 # compile the java file
-javac $3/$1_main.$2
+a = 1
+flag = 0
+while [-e "$3/$1-input/input-$a.txt" ]
+do
+    touch $1-code-output.txt
+    javac $3/$1_main.$2
 
-if [ $? != 0 ]; then
-    echo "compile failed"
+    res = $?
+
+    if [ $? != 0 ]; then
+        echo "compile failed"
+        flag = 1
+        cleanup $1 $3
+        exit
+    fi
+
+    cd $3
+    # run the code and trap the output
+    java $1_main < $1-input-$a.txt > ../$1-code-output.txt
+
+    if [ $? != 0 ]; then
+        echo "run failed"
+        flag = 1
+        cleanup $1 $3
+        exit
+    fi
+
+    cd ..
+
+    # Check if output matches
+    diff --strip-trailing-cr $1-code-output.txt $3/$1-output-$a.txt > $1-diff-messages.txt
+    if [ $? != 0 ]; then
+        echo "wrong output"
+        flag = 1
+        cleanup $1 $3
+        exit
+    fi
+
     cleanup $1 $3
-    exit
+    a=$((a+1))
+done
+
+
+
+if [ $flag -eq 0 ]; then
+    echo "successfully executed"
 fi
-
-cd $3
-# run the code and trap the output
-java $1_main < $1-input.txt > ../$1-code-output.txt
-
-if [ $? != 0 ]; then
-    echo "run failed"
-    cleanup $1 $3
-    exit
-fi
-
-cd ..
-
-# Check if output matches
-diff --strip-trailing-cr $1-code-output.txt $3/$1-output.txt > $1-diff-messages.txt
-if [ $? != 0 ]; then
-    echo "wrong output"
-    cleanup $1 $3
-    exit
-fi
-
-cleanup $1 $3
-echo "successfully executed"
