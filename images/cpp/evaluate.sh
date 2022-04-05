@@ -32,10 +32,15 @@ function cleanup(){
 # touch $1-code-output.txt
 
 # compile the c code 
-gcc $3/$1-main.$2 -o $1-main.out
+
+
+g++ $3/$1-main.$2 -o $1-main.out 2> compileError.txt
+
+
 
 if [ $? != 0 ]; then
-    echo "compile failed"
+    echo "compile failed "
+    cat compileError.txt
     cleanup $1
     exit
 fi

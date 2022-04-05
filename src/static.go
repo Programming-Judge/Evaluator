@@ -20,7 +20,7 @@ var lang_extension_map = map[string]string{
 }
 var lang_image_map = map[string]string{
 	"c":       "c-eval",
-	"cpp14":   "", // TODO
+	"cpp14":   "cpp-eval", // TODO
 	"python3": "python3-eval",
 	"pypy3":   "pypy3-eval",
 	"java":    "java-eval",

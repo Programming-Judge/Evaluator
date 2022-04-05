@@ -25,24 +25,49 @@ function cleanup() {
 #
 # output file = {id} + "-output.txt"
 
-touch $1-code-output.txt
+a=1
+flag=0
+while [ -e "$3/$1-input/input-$a.txt" ]
+do
+    touch $1-code-output.txt
 
-# Execute and trap output
-pypy3 $3/$1-main.$2 < $3/$1-input.txt &> $1-code-output.txt
+    # Execute and trap output
+    timeout $4 pypy3 $3/$1-main.$2 < $3/$1-input/input-$a.txt &> $1-code-output.txt 
 
-if [ $? != 0 ]; then
-    echo "run failed"
+    res=$?
+
+    if [ $res -eq 124 ]; then 
+        echo "time limit exceeded on test $a"
+        
+        cleanup $1
+        flag=1
+        exit
+    elif [ $res -eq 137 ]; then
+        echo "memory limit exceeded on test $a"
+        cleanup $1
+        flag=1
+        exit
+    elif [ $res != 0 ]; then
+        echo "run failed on test $a", $res
+        cleanup $1
+        flag=1
+        exit
+    fi
+
+    # Check if output matches
+    diff --strip-trailing-cr $1-code-output.txt $3/$1-output/output-$a.txt > $1-diff-messages.txt
+    if [ $? != 0 ]; then
+        echo "wrong output on test case $a"
+        cleanup $1
+        flag=1
+        exit
+    fi
+
     cleanup $1
-    exit
-fi
 
-# Check if output matches
-diff $1-code-output.txt $3/$1-output.txt > $1-diff-messages.txt
-if [ $? != 0 ]; then
-    echo "wrong output"
-    cleanup $1
-    exit
-fi
+    a=$((a+1))
+done
 
-cleanup $1
-echo "successfully executed"
+if [ $flag -eq 0 ]; then
+    echo "successfully executed"
+fi
