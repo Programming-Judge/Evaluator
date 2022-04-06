@@ -27,11 +27,11 @@ func execute(data map[string]string) (string, error) {
 		return "", err
 	}
 
-	id, lang, timelimit, memorylimit :=
-		data["id"], data["lang"], data["timelimit"], data["memorylimit"]
+	filename, id, lang, timelimit, memorylimit :=
+		data['filename'] , data["id"], data["lang"], data["timelimit"], data["memorylimit"]
 	
 	image_name := lang_image_map[lang]
-	fmt.Println(id,lang , timelimit , memorylimit , image_name)
+	// fmt.Println(id,lang , timelimit , memorylimit , image_name)
 	// Image Pull
 	// reader, err := cli.ImagePull(ctx, "docker.io/library/alpine", types.ImagePullOptions{})
 	// if err != nil {
@@ -56,7 +56,7 @@ func execute(data map[string]string) (string, error) {
 		ctx,
 		&container.Config{
 			Image: image_name,
-			Cmd:   []string{id, lang_extension_map[lang], bind_mnt_dir, timelimit},
+			Cmd:   []string{id, lang_extension_map[lang], bind_mnt_dir, timelimit , filename},
 		},
 		&container.HostConfig{
 			Mounts: []mount.Mount{

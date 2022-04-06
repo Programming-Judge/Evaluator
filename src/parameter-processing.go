@@ -8,6 +8,7 @@ import (
 )
 
 var paramDefaultValues = map[string]string{
+	"filename":    "",
 	"id":          "",
 	"lang":        "",
 	"timelimit":   "1s",
@@ -25,9 +26,21 @@ func validateId(next gin.HandlerFunc) gin.HandlerFunc {
 	}
 }
 
+func validateFilename(next gin.HandlerFunc) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		filename := ctx.Query("filename")
+		if filename == "" {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, "Parameter filename is required")
+			return
+		}
+		next(ctx)
+	}
+}
+
+
 func validateLang(next gin.HandlerFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		lang, msg := ctx.Query("lang"), ""
+		lang, msg := ctx.Query("language"), ""
 		if lang == "" {
 			msg = "Parameter lang is required"
 		} else if _, ok := lang_extension_map[lang]; !ok {
@@ -82,7 +95,7 @@ func chainMiddleWareWithDummy(mws ...Middleware) gin.HandlerFunc {
 }
 
 func validateAll() gin.HandlerFunc {
-	return chainMiddleWareWithDummy(validateId, validateLang,
+	return chainMiddleWareWithDummy(validateId, validateLang,validateFilename,
 		validateTimelimit, validateMemoryLimit)
 }
 

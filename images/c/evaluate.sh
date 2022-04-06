@@ -32,7 +32,7 @@ function cleanup(){
 # touch $1-code-output.txt
 
 # compile the c code 
-gcc $3/$1-main.$2 -o $1-main.out
+gcc $3/$5 -o $1-main.out
 
 if [ $? != 0 ]; then
     echo "compile failed"
@@ -62,7 +62,7 @@ do
         flag=1
         exit
     elif [ $res != 0 ]; then
-        echo "run failed on test $a", $res
+        echo "Run Time Error on test $a", $res
         cleanup $1
         flag=1
         exit
@@ -72,7 +72,7 @@ do
     diff $1-code-output.txt $3/$1-output/output-$a.txt > $1-diff-messages.txt
 
     if [ $? != 0 ]; then
-        echo "wrong output on test case $a"
+        echo "WA on test case $a"
         #cat $1-diff-messages.txt
         cleanup $1
         flag=1
@@ -88,5 +88,5 @@ done
 cleanup $1
 
 if [ $flag -eq 0 ]; then
-    echo "successfully executed"
+    echo "AC"
 fi

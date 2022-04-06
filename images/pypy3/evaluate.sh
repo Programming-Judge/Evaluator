@@ -32,23 +32,23 @@ do
     touch $1-code-output.txt
 
     # Execute and trap output
-    timeout $4 pypy3 $3/$1-main.$2 < $3/$1-input/input-$a.txt &> $1-code-output.txt 
+    timeout $4 pypy3 $3/$5 < $3/$1-input/input-$a.txt &> $1-code-output.txt 
 
     res=$?
 
     if [ $res -eq 124 ]; then 
-        echo "time limit exceeded on test $a"
+        echo "TLE on test $a"
         
         cleanup $1
         flag=1
         exit
     elif [ $res -eq 137 ]; then
-        echo "memory limit exceeded on test $a"
+        echo "MLE on test $a"
         cleanup $1
         flag=1
         exit
     elif [ $res != 0 ]; then
-        echo "run failed on test $a", $res
+        echo "Run Time Error on test $a", $res
         cleanup $1
         flag=1
         exit
@@ -57,7 +57,7 @@ do
     # Check if output matches
     diff --strip-trailing-cr $1-code-output.txt $3/$1-output/output-$a.txt > $1-diff-messages.txt
     if [ $? != 0 ]; then
-        echo "wrong output on test case $a"
+        echo "WA on test case $a"
         cleanup $1
         flag=1
         exit
@@ -69,5 +69,5 @@ do
 done
 
 if [ $flag -eq 0 ]; then
-    echo "successfully executed"
+    echo "AC"
 fi
