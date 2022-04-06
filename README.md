@@ -19,11 +19,11 @@
 
 # Test it with some http requests
 
-    localhost:7070/submit/eval?id=multi&lang=python3&timelimit=2s&memorylimit=64mb
-    localhost:7070/submit/eval?id=multi&lang=pypy3&timelimit=2s&memorylimit=64mb
-    localhost:7070/submit/eval?id=multi&lang=java&timelimit=2s&memorylimit=64mb
-    localhost:7070/submit/eval?id=multi&lang=c&timelimit=2s&memorylimit=64mb
-    localhost:7070/submit/eval?id=multi&lang=cpp14&timelimit=2s&memorylimit=64mb
+    localhost:7070/submit/eval?id=multi&lang=python3&timelimit=2s&memorylimit=64mb&filename=multi-main.py 
+    localhost:7070/submit/eval?id=multi&lang=pypy3&timelimit=2s&memorylimit=64mb&filename=multi-main.py 
+    localhost:7070/submit/eval?id=multi&lang=java&timelimit=2s&memorylimit=64mb&filename=multi_main.java 
+    localhost:7070/submit/eval?id=multi&lang=c&timelimit=2s&memorylimit=64mb&filename=hello.c
+    localhost:7070/submit/eval?id=multi&lang=cpp14&timelimit=2s&memorylimit=64mb&filename=multi-main.cpp
 
     **Default time limit = 1s**
     **Default memory limit = 64MB**

@@ -40,7 +40,7 @@ func validateFilename(next gin.HandlerFunc) gin.HandlerFunc {
 
 func validateLang(next gin.HandlerFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		lang, msg := ctx.Query("language"), ""
+		lang, msg := ctx.Query("lang"), ""
 		if lang == "" {
 			msg = "Parameter lang is required"
 		} else if _, ok := lang_extension_map[lang]; !ok {
