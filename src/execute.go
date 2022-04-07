@@ -43,7 +43,8 @@ func execute(data map[string]string) (string, error) {
 	// files are mounted (in the host)
 	location, _ := os.Getwd()
 	// Modified to work on windows as well
-	location = filepath.Join(filepath.Dir(location), "interface", bind_mnt_dir)
+	location = filepath.Join(filepath.Dir(location), bind_mnt_dir)
+	fmt.Println(location)
 	// Create int variable for memory limit
 	var mlimit int
 	mlimit, err = strconv.Atoi(memorylimit[:len(memorylimit)-2])

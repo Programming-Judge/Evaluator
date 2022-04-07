@@ -33,7 +33,7 @@ function cleanup() {
 # output file = {id} + "-output.txt"
 
 # compile the java file
-javac $3/$5
+javac $3/uploads/$5
 
 if [ $? != 0 ]; then
     echo "compile failed"
@@ -43,13 +43,13 @@ fi
 
 a=1
 flag=0
-cd $3
-while [ -e "$1-input/input-$a.txt" ]
+cd $3/uploads
+while [ -e "../tests/$1-input/input-$a.txt" ]
 do
     touch $1-code-output.txt
 
     # Execute and trap output
-    java $1_main < $1-input/input-$a.txt > $1-code-output.txt 
+    java $1_main < ../tests/$1-input/input-$a.txt > $1-code-output.txt 
 
     res=$?
 
@@ -71,7 +71,7 @@ do
     fi
 
     # Check if output matches
-    diff --strip-trailing-cr $1-code-output.txt $1-output/output-$a.txt > $1-diff-messages.txt
+    diff --strip-trailing-cr $1-code-output.txt ../tests/$1-output/output-$a.txt > $1-diff-messages.txt
     if [ $? != 0 ]; then
         echo "WA on test case $a"
         cleanup $1
