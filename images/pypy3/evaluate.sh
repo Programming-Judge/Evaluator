@@ -27,12 +27,12 @@ function cleanup() {
 
 a=1
 flag=0
-while [ -e "$3/tests/$1-input/input-$a.txt" ]
+while [ -e "$3/tests/$1-input/input/input-$a.txt" ]
 do
     touch $1-code-output.txt
 
     # Execute and trap output
-    timeout $4 pypy3 $3/uploads/$5 < $3/tests/$1-input/input-$a.txt &> $1-code-output.txt 
+    timeout $4 pypy3 $3/uploads/$5 < $3/tests/$1-input/input/input-$a.txt &> $1-code-output.txt 
 
     res=$?
 
@@ -55,7 +55,7 @@ do
     fi
 
     # Check if output matches
-    diff --strip-trailing-cr $1-code-output.txt $3/tests/$1-output/output-$a.txt > $1-diff-messages.txt
+    diff --strip-trailing-cr $1-code-output.txt $3/tests/$1-output/output/output-$a.txt > $1-diff-messages.txt
     if [ $? != 0 ]; then
         echo "WA on test case $a"
         cleanup $1

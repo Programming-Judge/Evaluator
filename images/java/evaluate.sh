@@ -8,8 +8,8 @@ function cleanup() {
         rm $1-diff-messages.txt
     fi
     # additional cleanup for class files in java
-    if [ -f "$1_main.class" ];then
-        rm $1_main.class
+    if [ -f "Solution.class" ];then
+        rm Solution.class
     fi
 }
 
@@ -44,12 +44,12 @@ fi
 a=1
 flag=0
 cd $3/uploads
-while [ -e "../tests/$1-input/input-$a.txt" ]
+while [ -e "../tests/$1-input/input/input-$a.txt" ]
 do
     touch $1-code-output.txt
 
     # Execute and trap output
-    java $1_main < ../tests/$1-input/input-$a.txt > $1-code-output.txt 
+    java Solution < ../tests/$1-input/input/input-$a.txt > $1-code-output.txt 
 
     res=$?
 
@@ -71,7 +71,7 @@ do
     fi
 
     # Check if output matches
-    diff --strip-trailing-cr $1-code-output.txt ../tests/$1-output/output-$a.txt > $1-diff-messages.txt
+    diff --strip-trailing-cr $1-code-output.txt ../tests/$1-output/output/output-$a.txt > $1-diff-messages.txt
     if [ $? != 0 ]; then
         echo "WA on test case $a"
         cleanup $1
