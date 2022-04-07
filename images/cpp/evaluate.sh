@@ -56,12 +56,12 @@ do
 
     res=$?
 
-    if [ $res -eq 124 ]; then 
+    if [ $res -eq 143 ]; then 
         echo "TLE on test $a"
         cleanup $1
         flag=1
         exit
-    elif [ $res -eq 137 ]; then
+    elif [ $res -eq 139 ]; then
         echo "MLE on test $a"
         cleanup $1
         flag=1
