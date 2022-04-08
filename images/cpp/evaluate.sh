@@ -74,7 +74,7 @@ do
     fi
 
     # Check if output matches
-    diff $1-code-output.txt $3/tests/$1-output/output/output-$a.txt > $1-diff-messages.txt
+    diff -w $1-code-output.txt $3/tests/$1-output/output/output-$a.txt > $1-diff-messages.txt
 
     if [ $? != 0 ]; then
         echo "WA on test case $a"
